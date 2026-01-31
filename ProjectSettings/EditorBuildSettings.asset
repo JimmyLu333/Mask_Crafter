@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FusionScene.unity
     guid: ef259b81efcba8f40813494fdfc81c87
+  - enabled: 1
+    path: Assets/Scenes/FinalScene.unity
+    guid: 082d0e20dcdcef74cbb9ee6a5c86a4dc
   m_configObjects: {}
