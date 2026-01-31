@@ -1,155 +1,141 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class NarrativeManager : MonoBehaviour
+public class SimpleNarrativeManager : MonoBehaviour
 {
     [Header("UI组件")]
-    public Text speakerText;
-    public Text dialogueText;
+    public Image backgroundImage;
+    public Image blackBackground;
     public Image playerImage;
     public Image npcImage;
     public GameObject dialoguePanel;
-    public Image blackBackground; // 黑屏遮罩
-    public Image backgroundImage; // 游戏背景图片
+    public Text speakerText;
+    public Text dialogueText;
 
     [Header("设置")]
     public float typingSpeed = 0.05f;
-    public float fadeDuration = 1f;
+    public float fadeDuration = 1.5f; // 黑屏淡入时间
+
+    [Header("场景设置")]
+    public int nextSceneIndex = 2; // 下一个场景的索引
+    public float blackScreenHoldTime = 1f; // 黑屏后等待多久切换场景
 
     private bool isTyping = false;
-    private Coroutine currentCoroutine;
 
     void Start()
     {
-        InitializeScene();
+        InitializeUI();
         StartCoroutine(NarrativeFlow());
     }
 
-    void InitializeScene()
+    void InitializeUI()
     {
-        // 初始状态
         dialoguePanel.SetActive(false);
         playerImage.gameObject.SetActive(false);
         npcImage.gameObject.SetActive(false);
 
-        // 确保背景图片存在
         if (backgroundImage != null)
-        {
-            backgroundImage.gameObject.SetActive(false); // 先隐藏背景
-        }
+            backgroundImage.gameObject.SetActive(false);
 
-        // 初始为黑屏
         if (blackBackground != null)
         {
-            blackBackground.color = Color.black;
             blackBackground.gameObject.SetActive(true);
-        }
-    }
-
-    void Update()
-    {
-        // 点击控制
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (isTyping)
-            {
-                // 跳过打字
-                StopAllCoroutines();
-                isTyping = false;
-            }
+            blackBackground.color = Color.black; // 初始黑屏
         }
     }
 
     IEnumerator NarrativeFlow()
     {
-        // === 第1阶段：开场黑屏 ===
-        Debug.Log("阶段1: 开场黑屏");
+        // === 1. 开场等待 ===
         yield return new WaitForSeconds(1f);
 
-        // === 第2阶段：显示开场文字 ===
-        Debug.Log("阶段2: 显示开场文字");
+        // === 2. 显示开场文字 ===
         dialoguePanel.SetActive(true);
         speakerText.text = "";
         yield return StartCoroutine(TypeText("某个寻常的夜晚..."));
-        yield return new WaitForSeconds(1.5f);
+        yield return WaitForClickOrTime(2f);
 
-        // === 第3阶段：淡出黑屏，显示背景 ===
-        Debug.Log("阶段3: 淡出黑屏，显示背景");
-        yield return StartCoroutine(FadeOutBlackScreen());
+        // === 3. 黑屏淡出，显示背景 ===
+        if (backgroundImage != null)
+            backgroundImage.gameObject.SetActive(true);
 
-        // === 第4阶段：右边主角出现 ===
-        Debug.Log("阶段4: 主角出现");
-        playerImage.gameObject.SetActive(true);
-        playerImage.color = new Color(1, 1, 1, 0);
-        yield return StartCoroutine(FadeInImage(playerImage, 1f));
+        yield return StartCoroutine(FadeBlackScreen(0f)); // 黑屏变透明
+
+        // === 4. 主角出现 ===
+        dialoguePanel.SetActive(false);
         yield return new WaitForSeconds(0.5f);
 
-        // === 第5阶段：主角独白 ===
-        Debug.Log("阶段5: 主角独白");
+        playerImage.gameObject.SetActive(true);
+        playerImage.color = new Color(1, 1, 1, 0);
+        yield return StartCoroutine(FadeInImage(playerImage));
+        yield return new WaitForSeconds(0.5f);
+
+        // === 5. 主角独白 ===
+        dialoguePanel.SetActive(true);
         speakerText.text = "主角";
+
         yield return StartCoroutine(ShowDialogue("今晚的街道格外安静..."));
         yield return StartCoroutine(ShowDialogue("或许我不该走这条路的..."));
 
-        // === 第6阶段：左边NPC出现 ===
-        Debug.Log("阶段6: NPC出现");
+        // === 6. NPC出现 ===
         npcImage.gameObject.SetActive(true);
         npcImage.color = new Color(1, 1, 1, 0);
-        yield return StartCoroutine(FadeInImage(npcImage, 1f));
+        yield return StartCoroutine(FadeInImage(npcImage));
         yield return new WaitForSeconds(0.5f);
 
-        // === 第7阶段：对话开始 ===
-        Debug.Log("阶段7: 对话开始");
+        // === 7. 对话 ===
         yield return StartCoroutine(ShowDialogueWithSpeaker("神秘人", "这么晚了，一个人在这里做什么？"));
         yield return StartCoroutine(ShowDialogueWithSpeaker("主角", "只是...随便走走。"));
         yield return StartCoroutine(ShowDialogueWithSpeaker("神秘人", "这种时候散步可不是好主意。"));
         yield return StartCoroutine(ShowDialogueWithSpeaker("主角", "你是谁？"));
 
-        // === 第8阶段：结束 ===
-        Debug.Log("叙事结束");
-        yield return StartCoroutine(FadeToBlack());
-
-        // 这里可以跳转到下一个场景
-        Debug.Log("准备加载下一个场景...");
+        // === 8. 结束叙事，切换场景 ===
+        yield return StartCoroutine(EndAndTransition());
     }
 
-    // 淡出黑屏（显示背景）
-    IEnumerator FadeOutBlackScreen()
+    IEnumerator EndAndTransition()
     {
-        // 先显示背景图片
-        if (backgroundImage != null)
-        {
-            backgroundImage.gameObject.SetActive(true);
-        }
+        Debug.Log("对话结束，准备切换场景");
 
-        // 逐渐将黑屏变为透明
-        float elapsed = 0f;
-        while (elapsed < fadeDuration)
-        {
-            elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(1, 0, elapsed / fadeDuration);
-            blackBackground.color = new Color(0, 0, 0, alpha);
-            yield return null;
-        }
+        // 8.1 可选：显示结束文字
+        dialoguePanel.SetActive(true);
+        speakerText.text = "";
+        yield return StartCoroutine(TypeText("故事开始了..."));
+        yield return new WaitForSeconds(1f);
 
-        // 完全透明后，可以禁用黑屏对象（可选）
-        // blackBackground.gameObject.SetActive(false);
+        // 8.2 黑屏淡入
+        Debug.Log("开始黑屏淡入");
+        yield return StartCoroutine(FadeBlackScreen(1f));
+
+        // 8.3 在黑屏状态下等待一会儿
+        Debug.Log($"黑屏保持 {blackScreenHoldTime} 秒");
+        yield return new WaitForSeconds(blackScreenHoldTime);
+
+        // 8.4 切换到下一个场景
+        Debug.Log($"切换到场景索引: {nextSceneIndex}");
+        LoadNextScene();
+
+        yield break;
     }
 
-    // 淡入到黑屏
-    IEnumerator FadeToBlack()
+    void LoadNextScene()
     {
-        float elapsed = 0f;
-        while (elapsed < fadeDuration)
+        if (nextSceneIndex >= 0 && nextSceneIndex < SceneManager.sceneCountInBuildSettings)
         {
-            elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(0, 1, elapsed / fadeDuration);
-            blackBackground.color = new Color(0, 0, 0, alpha);
-            yield return null;
+            SceneManager.LoadScene(nextSceneIndex);
+        }
+        else
+        {
+            Debug.LogError($"无效的场景索引: {nextSceneIndex}");
+            // 或者回到菜单场景
+            // SceneManager.LoadScene(0);
         }
     }
 
-    // 打字机效果
+    // ========== 辅助方法 ==========
+
     IEnumerator TypeText(string text)
     {
         isTyping = true;
@@ -164,46 +150,74 @@ public class NarrativeManager : MonoBehaviour
         isTyping = false;
     }
 
-    // 显示对话（等待点击）
+    IEnumerator WaitForClick()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        bool clicked = false;
+        while (!clicked)
+        {
+            if (Input.GetMouseButtonDown(0))
+                clicked = true;
+            yield return null;
+        }
+    }
+
+    IEnumerator WaitForClickOrTime(float maxTime)
+    {
+        float elapsed = 0f;
+        bool clicked = false;
+
+        while (elapsed < maxTime && !clicked)
+        {
+            elapsed += Time.deltaTime;
+            if (Input.GetMouseButtonDown(0))
+                clicked = true;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.1f);
+    }
+
     IEnumerator ShowDialogue(string text)
     {
         yield return StartCoroutine(TypeText(text));
         yield return WaitForClick();
     }
 
-    // 显示带说话者的对话
     IEnumerator ShowDialogueWithSpeaker(string speaker, string text)
     {
         speakerText.text = speaker;
         yield return StartCoroutine(ShowDialogue(text));
     }
 
-    // 淡入图片
-    IEnumerator FadeInImage(Image image, float duration)
+    IEnumerator FadeInImage(Image image)
     {
         float elapsed = 0f;
-        while (elapsed < duration)
+        while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(0, 1, elapsed / duration);
+            float alpha = Mathf.Lerp(0, 1, elapsed / fadeDuration);
             image.color = new Color(1, 1, 1, alpha);
             yield return null;
         }
+
+        image.color = Color.white;
     }
 
-    // 等待点击
-    IEnumerator WaitForClick()
+    IEnumerator FadeBlackScreen(float targetAlpha)
     {
-        yield return new WaitForSeconds(0.2f); // 防止连续点击
+        float startAlpha = blackBackground.color.a;
+        float elapsed = 0f;
 
-        bool clicked = false;
-        while (!clicked)
+        while (elapsed < fadeDuration)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                clicked = true;
-            }
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / fadeDuration);
+            blackBackground.color = new Color(0, 0, 0, alpha);
             yield return null;
         }
+
+        blackBackground.color = new Color(0, 0, 0, targetAlpha);
     }
 }
