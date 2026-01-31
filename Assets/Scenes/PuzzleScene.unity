@@ -748,7 +748,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &473520676
 RectTransform:
   m_ObjectHideFlags: 0
@@ -765,8 +765,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 800, y: 300}
+  m_AnchoredPosition: {x: 9.11, y: 0}
+  m_SizeDelta: {x: 1327.94, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &473520677
 MonoBehaviour:
@@ -790,11 +790,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 36
+    m_FontSize: 54
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 40
+    m_MaxSize: 54
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -991,6 +991,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ItemSlot4
       objectReference: {fileID: 0}
+    - target: {fileID: 2337066970582923228, guid: fd0dd2d63dfd30743a07a80712263fd7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7482667652216324306, guid: c4b83284784e15c4ab5f4b76f6de6b52, type: 3}
     - target: {fileID: 6690140375229100805, guid: fd0dd2d63dfd30743a07a80712263fd7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1485,6 +1489,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ItemSlot5
       objectReference: {fileID: 0}
+    - target: {fileID: 2337066970582923228, guid: fd0dd2d63dfd30743a07a80712263fd7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7482667652216324306, guid: 8722f84026482084d9aa98889e81e46d, type: 3}
     - target: {fileID: 6690140375229100805, guid: fd0dd2d63dfd30743a07a80712263fd7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1891,13 +1899,13 @@ MonoBehaviour:
   - itemName: phone
     itemIcon: {fileID: 0}
     isFound: 0
-  - itemName: 
+  - itemName: wallet
     itemIcon: {fileID: 0}
     isFound: 0
-  - itemName: 
+  - itemName: glass
     itemIcon: {fileID: 0}
     isFound: 0
-  - itemName: 
+  - itemName: note
     itemIcon: {fileID: 0}
     isFound: 0
   sceneItems:
@@ -1923,7 +1931,7 @@ MonoBehaviour:
   typingSpeed: 0.05
   lineDelay: 1
   endDelay: 2
-  nextSceneIndex: 2
+  nextSceneIndex: 3
 --- !u!1 &1711605394
 GameObject:
   m_ObjectHideFlags: 0
@@ -2093,6 +2101,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ItemSlot3
       objectReference: {fileID: 0}
+    - target: {fileID: 2337066970582923228, guid: fd0dd2d63dfd30743a07a80712263fd7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7482667652216324306, guid: e0336d86cc5fd9f468e92385b26ec299, type: 3}
     - target: {fileID: 6690140375229100805, guid: fd0dd2d63dfd30743a07a80712263fd7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -325,6 +325,12 @@ public class GameManager : MonoBehaviour
             StartCoroutine(OnGameCompleted());
         }
 
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Debug.Log("手动测试叙事系统");
+            StartCoroutine(ShowNarrative());
+        }
+
         // 按F2重置游戏（测试用）
         if (Input.GetKeyDown(KeyCode.F2) && !isShowingNarrative)
         {
