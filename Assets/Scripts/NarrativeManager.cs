@@ -79,12 +79,12 @@ public class NarrativeManager : MonoBehaviour
         // === 阶段4：主角出现 ===
         Debug.Log("阶段4：主角出现");
         dialoguePanel.SetActive(false);
-        yield return new WaitForSeconds(0.5f); // 短暂等待
+        yield return new WaitForSeconds(0.2f); // 短暂等待
 
         playerImage.gameObject.SetActive(true);
         playerImage.color = new Color(1, 1, 1, 0);
-        yield return StartCoroutine(FadeImage(playerImage, 1f));
-        yield return new WaitForSeconds(0.2f);
+        yield return StartCoroutine(FadeImage(playerImage, 2f));
+        yield return new WaitForSeconds(0.5f);
 
         // === 阶段5：主角独白 ===
         Debug.Log("阶段5：主角独白");
@@ -97,15 +97,34 @@ public class NarrativeManager : MonoBehaviour
         Debug.Log("阶段6：NPC出现");
         npcImage.gameObject.SetActive(true);
         npcImage.color = new Color(1, 1, 1, 0);
-        yield return StartCoroutine(FadeImage(npcImage, 1f));
-        yield return new WaitForSeconds(0.2f);
+        yield return StartCoroutine(FadeImage(npcImage, 2f));
+        yield return new WaitForSeconds(0.5f);
 
         // === 阶段7：对话 ===
         Debug.Log("阶段7：对话开始");
         yield return StartCoroutine(ShowDialogue("阿姨", "Hello, is this the place that does... that thing?"));
         yield return StartCoroutine(ShowDialogue("Me", "Yes. How can I help you?"));
-        yield return StartCoroutine(ShowDialogue("神秘人", "这种时候散步可不是好主意。"));
-        yield return StartCoroutine(ShowDialogue("主角", "你是谁？"));
+        yield return StartCoroutine(ShowDialogue("阿姨", "My daughter... she's getting married next month."));
+        yield return StartCoroutine(ShowText("（She takes out her daughter's wedding photo.）", true));
+        yield return StartCoroutine(ShowDialogue("阿姨", "But ever since I was little, after an accident... I lost my nose. So I've always kept it wrapped."));
+        yield return StartCoroutine(ShowDialogue("阿姨", "I don't want to wear these bandages at the wedding. And I don't want the guests to see... this face."));
+        yield return StartCoroutine(ShowDialogue("阿姨", "My daughter keeps saying we'll take family photos that day..."));
+        yield return StartCoroutine(ShowDialogue("阿姨", "I want... to stand next to her. Like a normal mother."));
+        yield return StartCoroutine(ShowDialogue("阿姨", "I'm not asking to look pretty... I just want a nose that people can look at."));
+        yield return StartCoroutine(ShowDialogue("阿姨", "One that won't make them turn away or whisper. Just let me stand by her side with my head held high. That's enough."));
+        yield return StartCoroutine(ShowDialogue("Me", "Then let's make you a nose that can \"face the light.\""));
+        yield return StartCoroutine(ShowDialogue("Me", "It won't be fake, and it won't be just covering things up."));
+        yield return StartCoroutine(ShowDialogue("Me", "It'll be a complete, natural shape—like the gentle curve of a tree branch in autumn."));
+        yield return StartCoroutine(ShowDialogue("阿姨", "Really... can you do that?"));
+        yield return StartCoroutine(ShowDialogue("Me", " Of course."));
+        yield return StartCoroutine(ShowDialogue("Me", "Look how brightly your daughter is smiling. "));
+        yield return StartCoroutine(ShowDialogue("Me", "You should stand next to her—complete, at ease, sharing that light. Not as someone she has to worry about or hide."));
+        yield return StartCoroutine(ShowDialogue("Me", "Come next Tuesday for a fitting. Then you can look in the mirror—and see yourself without bandages."));
+        yield return StartCoroutine(ShowDialogue("阿姨", "Okay... okay. I'll come next Tuesday."));
+        speakerText.text = "";
+        yield return StartCoroutine(ShowText("She leaves the bandages on the workbench. As she walks out, her back seems a little straighter. And outside, the rain is finally letting up.", true));
+
+
 
         // === 阶段8：结束叙事 ===
         Debug.Log("阶段8：结束叙事");
@@ -198,7 +217,7 @@ public class NarrativeManager : MonoBehaviour
         // 显示结束文字
         dialoguePanel.SetActive(true);
         speakerText.text = "";
-        yield return StartCoroutine(ShowText("故事开始了...", false));
+        yield return StartCoroutine(ShowText("It is time to work!", false));
         yield return new WaitForSeconds(1f);
 
         // 淡入黑屏
