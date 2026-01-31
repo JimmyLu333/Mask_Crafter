@@ -1,214 +1,123 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class SimpleNarrativeManager : MonoBehaviour
+public class NarrativeManager : MonoBehaviour
 {
-    [Header("UI×é¼þ")]
-    public Image backgroundImage;
-    public Image blackBackground;
+    [Header("UIç»„ä»¶")]
+    public Image backgroundImage;     // æ¸¸æˆèƒŒæ™¯å›¾ç‰‡
+    public Image blackBackground;     // é»‘å±é®ç½©
     public Image playerImage;
     public Image npcImage;
     public GameObject dialoguePanel;
     public Text speakerText;
     public Text dialogueText;
 
-    [Header("ÉèÖÃ")]
+    [Header("è®¾ç½®")]
     public float typingSpeed = 0.05f;
-    public float fadeDuration = 1.5f; // ºÚÆÁµ­ÈëÊ±¼ä
-
-    [Header("³¡¾°ÉèÖÃ")]
-    public int nextSceneIndex = 2; // ÏÂÒ»¸ö³¡¾°µÄË÷Òý
-    public float blackScreenHoldTime = 1f; // ºÚÆÁºóµÈ´ý¶à¾ÃÇÐ»»³¡¾°
-
-    private bool isTyping = false;
+    public float fadeDuration = 2f;
+    public int nextSceneIndex = 2;
 
     void Start()
     {
+        Debug.Log("å™äº‹åœºæ™¯å¼€å§‹");
+
+        // å…³é”®ï¼šå…ˆæ˜¾ç¤ºèƒŒæ™¯ï¼Œå†è®¾ç½®é»‘å±
         InitializeUI();
-        StartCoroutine(NarrativeFlow());
+
+        StartCoroutine(NarrativeSequence());
     }
 
     void InitializeUI()
     {
+        // ç¬¬ä¸€æ­¥ï¼šå…ˆæ˜¾ç¤ºèƒŒæ™¯å›¾ç‰‡ï¼ˆä½†è¢«é»‘å±é®ä½ï¼‰
+        if (backgroundImage != null)
+        {
+            backgroundImage.gameObject.SetActive(true);
+            backgroundImage.color = Color.white; // ç¡®ä¿æ­£å¸¸æ˜¾ç¤º
+            Debug.Log("âœ… èƒŒæ™¯å›¾ç‰‡å·²æ¿€æ´»");
+        }
+
+        // ç¬¬äºŒæ­¥ï¼šè®¾ç½®å…¶ä»–UIä¸ºéšè—
         dialoguePanel.SetActive(false);
         playerImage.gameObject.SetActive(false);
         npcImage.gameObject.SetActive(false);
 
-        if (backgroundImage != null)
-            backgroundImage.gameObject.SetActive(false);
-
+        // ç¬¬ä¸‰æ­¥ï¼šç¡®ä¿é»‘å±åœ¨æœ€ä¸Šå±‚å¹¶å®Œå…¨é®ç›–
         if (blackBackground != null)
         {
+            blackBackground.transform.SetAsLastSibling(); // æ”¾åˆ°æœ€ä¸Šå±‚
             blackBackground.gameObject.SetActive(true);
-            blackBackground.color = Color.black; // ³õÊ¼ºÚÆÁ
+            blackBackground.color = Color.black; // å®Œå…¨é»‘å±
+            Debug.Log("âœ… é»‘å±è®¾ç½®å®Œæˆ");
         }
     }
 
-    IEnumerator NarrativeFlow()
+    IEnumerator NarrativeSequence()
     {
-        // === 1. ¿ª³¡µÈ´ý ===
+        // === é˜¶æ®µ1ï¼šåˆå§‹é»‘å±ç­‰å¾… ===
+        Debug.Log("é˜¶æ®µ1ï¼šåˆå§‹é»‘å±ç­‰å¾…1ç§’");
         yield return new WaitForSeconds(1f);
 
-        // === 2. ÏÔÊ¾¿ª³¡ÎÄ×Ö ===
+        // === é˜¶æ®µ2ï¼šæ˜¾ç¤ºå¼€åœºæ–‡å­—ï¼ˆåœ¨é»‘å±ä¸Šæ˜¾ç¤ºï¼‰===
+        Debug.Log("é˜¶æ®µ2ï¼šæ˜¾ç¤ºå¼€åœºæ–‡å­—ï¼ˆé»‘å±èƒŒæ™¯ï¼‰");
         dialoguePanel.SetActive(true);
         speakerText.text = "";
-        yield return StartCoroutine(TypeText("Ä³¸öÑ°³£µÄÒ¹Íí..."));
-        yield return WaitForClickOrTime(2f);
+        yield return StartCoroutine(ShowText("æŸä¸ªå¯»å¸¸çš„å¤œæ™š...", true));
 
-        // === 3. ºÚÆÁµ­³ö£¬ÏÔÊ¾±³¾° ===
-        if (backgroundImage != null)
-            backgroundImage.gameObject.SetActive(true);
+        // === é˜¶æ®µ3ï¼šé»‘å±æ·¡å‡ºï¼Œæ˜¾ç¤ºèƒŒæ™¯ ===
+        Debug.Log($"é˜¶æ®µ3ï¼šé»‘å±æ·¡å‡ºï¼ŒèƒŒæ™¯é€æ¸æ˜¾ç¤ºï¼ˆ{fadeDuration}ç§’ï¼‰");
 
-        yield return StartCoroutine(FadeBlackScreen(0f)); // ºÚÆÁ±äÍ¸Ã÷
+        // æ·¡å‡ºé»‘å±ï¼ŒèƒŒæ™¯å°±ä¼šé€æ¸æ˜¾çŽ°
+        yield return StartCoroutine(FadeBlackScreen(0f));
 
-        // === 4. Ö÷½Ç³öÏÖ ===
+        Debug.Log("âœ… é»‘å±æ·¡å‡ºå®Œæˆï¼ŒèƒŒæ™¯å·²å®Œå…¨æ˜¾ç¤º");
+
+        // === é˜¶æ®µ4ï¼šä¸»è§’å‡ºçŽ° ===
+        Debug.Log("é˜¶æ®µ4ï¼šä¸»è§’å‡ºçŽ°");
         dialoguePanel.SetActive(false);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.5f); // çŸ­æš‚ç­‰å¾…
 
         playerImage.gameObject.SetActive(true);
         playerImage.color = new Color(1, 1, 1, 0);
-        yield return StartCoroutine(FadeInImage(playerImage));
+        yield return StartCoroutine(FadeImage(playerImage, 1f));
         yield return new WaitForSeconds(0.5f);
 
-        // === 5. Ö÷½Ç¶À°× ===
+        // === é˜¶æ®µ5ï¼šä¸»è§’ç‹¬ç™½ ===
+        Debug.Log("é˜¶æ®µ5ï¼šä¸»è§’ç‹¬ç™½");
         dialoguePanel.SetActive(true);
-        speakerText.text = "Ö÷½Ç";
+        speakerText.text = "ä¸»è§’";
+        yield return StartCoroutine(ShowText("ä»Šæ™šçš„è¡—é“æ ¼å¤–å®‰é™...", true));
+        yield return StartCoroutine(ShowText("æˆ–è®¸æˆ‘ä¸è¯¥èµ°è¿™æ¡è·¯çš„...", true));
 
-        yield return StartCoroutine(ShowDialogue("½ñÍíµÄ½ÖµÀ¸ñÍâ°²¾²..."));
-        yield return StartCoroutine(ShowDialogue("»òÐíÎÒ²»¸Ã×ßÕâÌõÂ·µÄ..."));
-
-        // === 6. NPC³öÏÖ ===
+        // === é˜¶æ®µ6ï¼šNPCå‡ºçŽ° ===
+        Debug.Log("é˜¶æ®µ6ï¼šNPCå‡ºçŽ°");
         npcImage.gameObject.SetActive(true);
         npcImage.color = new Color(1, 1, 1, 0);
-        yield return StartCoroutine(FadeInImage(npcImage));
+        yield return StartCoroutine(FadeImage(npcImage, 1f));
         yield return new WaitForSeconds(0.5f);
 
-        // === 7. ¶Ô»° ===
-        yield return StartCoroutine(ShowDialogueWithSpeaker("ÉñÃØÈË", "ÕâÃ´ÍíÁË£¬Ò»¸öÈËÔÚÕâÀï×öÊ²Ã´£¿"));
-        yield return StartCoroutine(ShowDialogueWithSpeaker("Ö÷½Ç", "Ö»ÊÇ...Ëæ±ã×ß×ß¡£"));
-        yield return StartCoroutine(ShowDialogueWithSpeaker("ÉñÃØÈË", "ÕâÖÖÊ±ºòÉ¢²½¿É²»ÊÇºÃÖ÷Òâ¡£"));
-        yield return StartCoroutine(ShowDialogueWithSpeaker("Ö÷½Ç", "ÄãÊÇË­£¿"));
+        // === é˜¶æ®µ7ï¼šå¯¹è¯ ===
+        Debug.Log("é˜¶æ®µ7ï¼šå¯¹è¯å¼€å§‹");
+        yield return StartCoroutine(ShowDialogue("ç¥žç§˜äºº", "è¿™ä¹ˆæ™šäº†ï¼Œä¸€ä¸ªäººåœ¨è¿™é‡Œåšä»€ä¹ˆï¼Ÿ"));
+        yield return StartCoroutine(ShowDialogue("ä¸»è§’", "åªæ˜¯...éšä¾¿èµ°èµ°ã€‚"));
+        yield return StartCoroutine(ShowDialogue("ç¥žç§˜äºº", "è¿™ç§æ—¶å€™æ•£æ­¥å¯ä¸æ˜¯å¥½ä¸»æ„ã€‚"));
+        yield return StartCoroutine(ShowDialogue("ä¸»è§’", "ä½ æ˜¯è°ï¼Ÿ"));
 
-        // === 8. ½áÊøÐðÊÂ£¬ÇÐ»»³¡¾° ===
-        yield return StartCoroutine(EndAndTransition());
-    }
-
-    IEnumerator EndAndTransition()
-    {
-        Debug.Log("¶Ô»°½áÊø£¬×¼±¸ÇÐ»»³¡¾°");
-
-        // 8.1 ¿ÉÑ¡£ºÏÔÊ¾½áÊøÎÄ×Ö
-        dialoguePanel.SetActive(true);
-        speakerText.text = "";
-        yield return StartCoroutine(TypeText("¹ÊÊÂ¿ªÊ¼ÁË..."));
-        yield return new WaitForSeconds(1f);
-
-        // 8.2 ºÚÆÁµ­Èë
-        Debug.Log("¿ªÊ¼ºÚÆÁµ­Èë");
-        yield return StartCoroutine(FadeBlackScreen(1f));
-
-        // 8.3 ÔÚºÚÆÁ×´Ì¬ÏÂµÈ´ýÒ»»á¶ù
-        Debug.Log($"ºÚÆÁ±£³Ö {blackScreenHoldTime} Ãë");
-        yield return new WaitForSeconds(blackScreenHoldTime);
-
-        // 8.4 ÇÐ»»µ½ÏÂÒ»¸ö³¡¾°
-        Debug.Log($"ÇÐ»»µ½³¡¾°Ë÷Òý: {nextSceneIndex}");
-        LoadNextScene();
-
-        yield break;
-    }
-
-    void LoadNextScene()
-    {
-        if (nextSceneIndex >= 0 && nextSceneIndex < SceneManager.sceneCountInBuildSettings)
-        {
-            SceneManager.LoadScene(nextSceneIndex);
-        }
-        else
-        {
-            Debug.LogError($"ÎÞÐ§µÄ³¡¾°Ë÷Òý: {nextSceneIndex}");
-            // »òÕß»Øµ½²Ëµ¥³¡¾°
-            // SceneManager.LoadScene(0);
-        }
-    }
-
-    // ========== ¸¨Öú·½·¨ ==========
-
-    IEnumerator TypeText(string text)
-    {
-        isTyping = true;
-        dialogueText.text = "";
-
-        foreach (char letter in text.ToCharArray())
-        {
-            dialogueText.text += letter;
-            yield return new WaitForSeconds(typingSpeed);
-        }
-
-        isTyping = false;
-    }
-
-    IEnumerator WaitForClick()
-    {
-        yield return new WaitForSeconds(0.1f);
-
-        bool clicked = false;
-        while (!clicked)
-        {
-            if (Input.GetMouseButtonDown(0))
-                clicked = true;
-            yield return null;
-        }
-    }
-
-    IEnumerator WaitForClickOrTime(float maxTime)
-    {
-        float elapsed = 0f;
-        bool clicked = false;
-
-        while (elapsed < maxTime && !clicked)
-        {
-            elapsed += Time.deltaTime;
-            if (Input.GetMouseButtonDown(0))
-                clicked = true;
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(0.1f);
-    }
-
-    IEnumerator ShowDialogue(string text)
-    {
-        yield return StartCoroutine(TypeText(text));
-        yield return WaitForClick();
-    }
-
-    IEnumerator ShowDialogueWithSpeaker(string speaker, string text)
-    {
-        speakerText.text = speaker;
-        yield return StartCoroutine(ShowDialogue(text));
-    }
-
-    IEnumerator FadeInImage(Image image)
-    {
-        float elapsed = 0f;
-        while (elapsed < fadeDuration)
-        {
-            elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(0, 1, elapsed / fadeDuration);
-            image.color = new Color(1, 1, 1, alpha);
-            yield return null;
-        }
-
-        image.color = Color.white;
+        // === é˜¶æ®µ8ï¼šç»“æŸå™äº‹ ===
+        Debug.Log("é˜¶æ®µ8ï¼šç»“æŸå™äº‹");
+        yield return StartCoroutine(EndNarrative());
     }
 
     IEnumerator FadeBlackScreen(float targetAlpha)
     {
+        if (blackBackground == null) yield break;
+
         float startAlpha = blackBackground.color.a;
         float elapsed = 0f;
+
+        Debug.Log($"å¼€å§‹Fade: {startAlpha} â†’ {targetAlpha}");
 
         while (elapsed < fadeDuration)
         {
@@ -219,5 +128,82 @@ public class SimpleNarrativeManager : MonoBehaviour
         }
 
         blackBackground.color = new Color(0, 0, 0, targetAlpha);
+
+        // å¦‚æžœå®Œå…¨é€æ˜Žï¼Œå¯ä»¥æ”¾åˆ°ä¸‹å±‚ï¼ˆå¯é€‰ï¼‰
+        if (targetAlpha == 0)
+        {
+            blackBackground.transform.SetAsFirstSibling();
+        }
+    }
+
+    IEnumerator ShowText(string text, bool waitForClick = true)
+    {
+        dialogueText.text = "";
+
+        foreach (char letter in text.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSeconds(typingSpeed);
+        }
+
+        if (waitForClick)
+        {
+            yield return StartCoroutine(WaitForClick());
+        }
+    }
+
+    IEnumerator ShowDialogue(string speaker, string text)
+    {
+        speakerText.text = speaker;
+        yield return StartCoroutine(ShowText(text, true));
+    }
+
+    IEnumerator FadeImage(Image image, float targetAlpha)
+    {
+        if (image == null) yield break;
+
+        float startAlpha = image.color.a;
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / fadeDuration);
+            image.color = new Color(1, 1, 1, alpha);
+            yield return null;
+        }
+
+        image.color = new Color(1, 1, 1, targetAlpha);
+    }
+
+    IEnumerator WaitForClick()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        bool clicked = false;
+        while (!clicked)
+        {
+            if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
+            {
+                clicked = true;
+            }
+            yield return null;
+        }
+    }
+
+    IEnumerator EndNarrative()
+    {
+        // æ˜¾ç¤ºç»“æŸæ–‡å­—
+        dialoguePanel.SetActive(true);
+        speakerText.text = "";
+        yield return StartCoroutine(ShowText("æ•…äº‹å¼€å§‹äº†...", false));
+        yield return new WaitForSeconds(1f);
+
+        // æ·¡å…¥é»‘å±
+        yield return StartCoroutine(FadeBlackScreen(1f));
+        yield return new WaitForSeconds(0.5f);
+
+        // åˆ‡æ¢åœºæ™¯
+        SceneManager.LoadScene(nextSceneIndex);
     }
 }
