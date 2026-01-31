@@ -163,8 +163,6 @@ MonoBehaviour:
   typingSpeed: 0.05
   fadeDuration: 2
   nextSceneIndex: 2
-  clickCooldown: 0.3
-  minDisplayTime: 0.5
 --- !u!4 &189022615
 Transform:
   m_ObjectHideFlags: 0
@@ -627,8 +625,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -300, y: 0}
-  m_SizeDelta: {x: 736, y: 736}
+  m_AnchoredPosition: {x: -247, y: -80.704}
+  m_SizeDelta: {x: 1225.2214, y: 918.5917}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1369725273
 MonoBehaviour:
@@ -650,7 +648,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 752d7175e97a1224c957d6a8acc6ebed, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 98b26a3e39eb65448a3b93dfa5610d9c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
