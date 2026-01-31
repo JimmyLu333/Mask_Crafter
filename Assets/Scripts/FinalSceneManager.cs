@@ -19,6 +19,12 @@ public class FinalSceneManager : MonoBehaviour
     public float fadeDuration = 2f;
     public int nextSceneIndex = 2;
 
+    [Header("阿姨Sprite设置")]
+    public Sprite auntNormalSprite;    // 拖入正常Sprite
+    public Sprite auntChangedSprite;   // 拖入改变后的Sprite
+    public float spriteChangeDuration = 0.8f; // 改变持续时间
+
+
     void Start()
     {
         Debug.Log("叙事场景开始");
@@ -64,27 +70,15 @@ public class FinalSceneManager : MonoBehaviour
         Debug.Log("阶段2：显示开场文字（黑屏背景）");
         dialoguePanel.SetActive(true);
         speakerText.text = "";
-        yield return StartCoroutine(ShowText("终于做完了", true));
-
-
-        /*
-        speakerText.text = "";
-        yield return StartCoroutine(ShowText("It's a rainy afternoon, water droplets slowly tracing lines down the window.", true));
-        yield return StartCoroutine(ShowText("There are unfinished orders scattered on the workbench, " +
-            "and the bell on the door hasn't rung in a long time.", true));
-        */
+        yield return StartCoroutine(ShowText("Finished！！！", true));
 
         playerImage.gameObject.SetActive(true);
         playerImage.color = new Color(1, 1, 1, 0);
         yield return StartCoroutine(FadeImage(playerImage, 2f));
         yield return new WaitForSeconds(0.5f);
 
-        // === 阶段5：主角独白 ===
-        Debug.Log("阶段5：主角独白");
-        //dialoguePanel.SetActive(true);
         speakerText.text = "Me";
-        yield return StartCoroutine(ShowText("Haven't had a customer in a long time...", true));
-        yield return StartCoroutine(ShowText("Wonder what kind of person will come this time.", true));
+        yield return StartCoroutine(ShowText("I wonder when she will come?", true));
 
         // === 阶段3：黑屏淡出，显示背景 ===
         Debug.Log($"阶段3：黑屏淡出，背景逐渐显示（{fadeDuration}秒）");
@@ -93,11 +87,6 @@ public class FinalSceneManager : MonoBehaviour
         yield return StartCoroutine(FadeBlackScreen(0f));
 
         Debug.Log("✅ 黑屏淡出完成，背景已完全显示");
-
-        // === 阶段4：主角出现 ===
-        Debug.Log("阶段4：主角出现");
-        //dialoguePanel.SetActive(false);
-        //yield return new WaitForSeconds(0.2f); // 短暂等待
 
         
 
@@ -110,27 +99,25 @@ public class FinalSceneManager : MonoBehaviour
 
         // === 阶段7：对话 ===
         Debug.Log("阶段7：对话开始");
-        yield return StartCoroutine(ShowDialogue("阿姨", "Hello, is this the place that does... that thing?"));
-        yield return StartCoroutine(ShowDialogue("Me", "Yes. How can I help you?"));
-        yield return StartCoroutine(ShowDialogue("阿姨", "My daughter... she's getting married next month."));
-        yield return StartCoroutine(ShowText("（She takes out her daughter's wedding photo.）", true));
-        yield return StartCoroutine(ShowDialogue("阿姨", "But ever since I was little, after an accident... I lost my nose. So I've always kept it wrapped."));
-        yield return StartCoroutine(ShowDialogue("阿姨", "I don't want to wear these bandages at the wedding. And I don't want the guests to see... this face."));
-        yield return StartCoroutine(ShowDialogue("阿姨", "My daughter keeps saying we'll take family photos that day..."));
-        yield return StartCoroutine(ShowDialogue("阿姨", "I want... to stand next to her. Like a normal mother."));
-        yield return StartCoroutine(ShowDialogue("阿姨", "I'm not asking to look pretty... I just want a nose that people can look at."));
-        yield return StartCoroutine(ShowDialogue("阿姨", "One that won't make them turn away or whisper. Just let me stand by her side with my head held high. That's enough."));
-        yield return StartCoroutine(ShowDialogue("Me", "Then let's make you a nose that can \"face the light.\""));
-        yield return StartCoroutine(ShowDialogue("Me", "It won't be fake, and it won't be just covering things up."));
-        yield return StartCoroutine(ShowDialogue("Me", "It'll be a complete, natural shape—like the gentle curve of a tree branch in autumn."));
-        yield return StartCoroutine(ShowDialogue("阿姨", "Really... can you do that?"));
-        yield return StartCoroutine(ShowDialogue("Me", " Of course."));
-        yield return StartCoroutine(ShowDialogue("Me", "Look how brightly your daughter is smiling. "));
-        yield return StartCoroutine(ShowDialogue("Me", "You should stand next to her—complete, at ease, sharing that light. Not as someone she has to worry about or hide."));
-        yield return StartCoroutine(ShowDialogue("Me", "Come next Tuesday for a fitting. Then you can look in the mirror—and see yourself without bandages."));
-        yield return StartCoroutine(ShowDialogue("阿姨", "Okay... okay. I'll come next Tuesday."));
+        yield return StartCoroutine(ShowDialogue("", "The lady pushes the door open, her face still swathed in thick bandages."));
+        yield return StartCoroutine(ShowDialogue("阿姨", "Master... I'm here."));
+        yield return StartCoroutine(ShowDialogue("Me", "Everything is ready. Please, have a seat."));
+        yield return StartCoroutine(ShowDialogue("", "I pick up the custom-made prosthesis and fit it onto her face with a steady, gentle hand. As the final seam blends seamlessly into her skin, I hand her the mirror."));
+        
+        yield return StartCoroutine(ShowDialogue("Me", "Take a look. Not just at the nose—look at yourself."));
+
+        yield return StartCoroutine(ShowDialogue("", "She stares into the mirror for a long time. Her eyes shift from shock to disbelief, finally settling into a pool of calm water."));
+        
+        yield return StartCoroutine(ChangeAuntSpriteSimple());
+
+        yield return StartCoroutine(ShowDialogue("阿姨", "Is this... really me? I had almost forgotten what I looked like without the bandages."));
+        yield return StartCoroutine(ShowDialogue("Me", "The contour is very natural. At the wedding next month, you won't have to hide in the corners, nor will you have to worry about the wind. You only need to stand by her side and share her smile."));
+        yield return StartCoroutine(ShowDialogue("阿姨", "Thank you... thank you so much. Finally, I can walk her down the aisle with dignity."));
+
         speakerText.text = "";
-        yield return StartCoroutine(ShowText("She leaves the bandages on the workbench. As she walks out, her back seems a little straighter. And outside, the rain is finally letting up.", true));
+        yield return StartCoroutine(ShowText("She rises to leave, leaving the pile of old bandages behind on the workbench. Outside, the sky has cleared after the rain, and the sunlight casts her long shadow across the ground.", true));
+
+
 
 
 
@@ -225,7 +212,7 @@ public class FinalSceneManager : MonoBehaviour
         // 显示结束文字
         dialoguePanel.SetActive(true);
         speakerText.text = "";
-        yield return StartCoroutine(ShowText("It is time to work!", false));
+        yield return StartCoroutine(ShowText("Who will come next?", false));
         yield return new WaitForSeconds(1f);
 
         // 淡入黑屏
@@ -235,4 +222,67 @@ public class FinalSceneManager : MonoBehaviour
         // 切换场景
         SceneManager.LoadScene(nextSceneIndex);
     }
+
+    IEnumerator ChangeAuntSpriteSimple()
+    {
+        if (npcImage == null || auntChangedSprite == null)
+        {
+            Debug.LogError("npcImage或auntChangedSprite未设置");
+            yield break;
+        }
+
+        Debug.Log("开始改变阿姨Sprite");
+
+        // 淡出效果
+        yield return StartCoroutine(FadeImage(npcImage, 0.3f, 0.5f));
+
+        // 更换Sprite
+        npcImage.sprite = auntChangedSprite;
+
+        // 淡入效果
+        yield return StartCoroutine(FadeImage(npcImage, 1f, 0.5f));
+
+        // 可选：添加一些特效
+        yield return StartCoroutine(SparkleEffect());
+
+        Debug.Log("阿姨Sprite改变完成");
+    }
+
+    // 带持续时间的淡入淡出方法
+    IEnumerator FadeImage(Image image, float targetAlpha, float duration)
+    {
+        float startAlpha = image.color.a;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration);
+            image.color = new Color(1, 1, 1, alpha);
+            yield return null;
+        }
+
+        image.color = new Color(1, 1, 1, targetAlpha);
+    }
+
+    IEnumerator SparkleEffect()
+    {
+        // 简单的位置抖动
+        RectTransform rt = npcImage.GetComponent<RectTransform>();
+        Vector3 originalPos = rt.anchoredPosition;
+
+        float duration = 0.3f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float shake = Mathf.Sin(elapsed * 30f) * (1f - elapsed / duration) * 5f;
+            rt.anchoredPosition = originalPos + new Vector3(shake, 0, 0);
+            yield return null;
+        }
+
+        rt.anchoredPosition = originalPos;
+    }
+
 }
