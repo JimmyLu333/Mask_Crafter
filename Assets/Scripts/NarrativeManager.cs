@@ -58,13 +58,15 @@ public class NarrativeManager : MonoBehaviour
     {
         // === 阶段1：初始黑屏等待 ===
         Debug.Log("阶段1：初始黑屏等待1秒");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
 
         // === 阶段2：显示开场文字（在黑屏上显示）===
         Debug.Log("阶段2：显示开场文字（黑屏背景）");
         dialoguePanel.SetActive(true);
         speakerText.text = "";
-        yield return StartCoroutine(ShowText("某个寻常的夜晚...", true));
+        yield return StartCoroutine(ShowText("It's a rainy afternoon, water droplets slowly tracing lines down the window.", true));
+        yield return StartCoroutine(ShowText("There are unfinished orders scattered on the workbench, " +
+            "and the bell on the door hasn't rung in a long time.", true));
 
         // === 阶段3：黑屏淡出，显示背景 ===
         Debug.Log($"阶段3：黑屏淡出，背景逐渐显示（{fadeDuration}秒）");
@@ -82,26 +84,26 @@ public class NarrativeManager : MonoBehaviour
         playerImage.gameObject.SetActive(true);
         playerImage.color = new Color(1, 1, 1, 0);
         yield return StartCoroutine(FadeImage(playerImage, 1f));
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
 
         // === 阶段5：主角独白 ===
         Debug.Log("阶段5：主角独白");
         dialoguePanel.SetActive(true);
-        speakerText.text = "主角";
-        yield return StartCoroutine(ShowText("今晚的街道格外安静...", true));
-        yield return StartCoroutine(ShowText("或许我不该走这条路的...", true));
+        speakerText.text = "Me";
+        yield return StartCoroutine(ShowText("Haven't had a customer in a long time...", true));
+        yield return StartCoroutine(ShowText("Wonder what kind of person will come this time.", true));
 
         // === 阶段6：NPC出现 ===
         Debug.Log("阶段6：NPC出现");
         npcImage.gameObject.SetActive(true);
         npcImage.color = new Color(1, 1, 1, 0);
         yield return StartCoroutine(FadeImage(npcImage, 1f));
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
 
         // === 阶段7：对话 ===
         Debug.Log("阶段7：对话开始");
-        yield return StartCoroutine(ShowDialogue("神秘人", "这么晚了，一个人在这里做什么？"));
-        yield return StartCoroutine(ShowDialogue("主角", "只是...随便走走。"));
+        yield return StartCoroutine(ShowDialogue("阿姨", "Hello, is this the place that does... that thing?"));
+        yield return StartCoroutine(ShowDialogue("Me", "Yes. How can I help you?"));
         yield return StartCoroutine(ShowDialogue("神秘人", "这种时候散步可不是好主意。"));
         yield return StartCoroutine(ShowDialogue("主角", "你是谁？"));
 
