@@ -15,7 +15,14 @@ public class AutoReturnToScene : MonoBehaviour
     void Start()
     {
         StartCoroutine(ReturnAfterDelay());
+        if (AudioMmanager.instance != null)
+        {
+            AudioMmanager.instance.StopBackgroundMusic();
+            // »òÕßµ­³ö
+            AudioMmanager.instance.FadeOutBackgroundMusic(1.0f);
+        }
     }
+
 
     IEnumerator ReturnAfterDelay()
     {
