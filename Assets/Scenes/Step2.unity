@@ -207,7 +207,7 @@ MonoBehaviour:
   - "Lets Begin\uFF01"
   tutorialPanel: {fileID: 778032148}
   tutorialText: {fileID: 1047652699}
-  typingSpeed: 0.05
+  typingSpeed: 0.03
   lineDelay: 1.5
   autoShowOnStart: 1
 --- !u!1 &635083568
