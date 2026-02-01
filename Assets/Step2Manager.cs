@@ -16,9 +16,9 @@ public class Step2Manager : MonoBehaviour
     public Collider2D paintZone;  // 2
 
     [Header("Brush")]
-    public GameObject brushPrefab;        // 普通刷子
-    public GameObject paintedBrushPrefab; // 染色刷子
-    public Transform brushSpawn;          // 出生点
+    public GameObject brushPrefab;
+    public GameObject paintedBrushPrefab;
+    public Transform brushSpawn;
 
     int step = 0;
 
@@ -28,7 +28,8 @@ public class Step2Manager : MonoBehaviour
         SpawnBrush();
     }
 
-    // 控制鼻子显示
+    // ================= 鼻子显示 =================
+
     void ShowNose(int index)
     {
         nose1.SetActive(index == 1);
@@ -37,7 +38,8 @@ public class Step2Manager : MonoBehaviour
         nose4.SetActive(index == 4);
     }
 
-    // 生成普通刷子
+    // ================= 生成刷子 =================
+
     void SpawnBrush()
     {
         GameObject brush = Instantiate(
@@ -47,10 +49,9 @@ public class Step2Manager : MonoBehaviour
             brushSpawn.parent
         );
 
-        SetupTool(brush, 3);
+        SetupTool(brush, 3); // 普通刷子 = 3
     }
 
-    // 生成染色刷子
     void SpawnPaintedBrush()
     {
         GameObject brush = Instantiate(
@@ -60,11 +61,11 @@ public class Step2Manager : MonoBehaviour
             brushSpawn.parent
         );
 
-        // 染色刷子 = ID 4
-        SetupTool(brush, 4);
+        SetupTool(brush, 4); // 染色刷子 = 4
     }
 
-    // 给新工具绑定 Manager 和 ID（核心）
+    // ================= 绑定工具 =================
+
     void SetupTool(GameObject obj, int id)
     {
         DragTool tool = obj.GetComponent<DragTool>();
@@ -80,12 +81,39 @@ public class Step2Manager : MonoBehaviour
         }
     }
 
-    // 处理拖拽逻辑
+    // ================= 拖拽入口（关键）=================
+
+    public void OnToolDropped(DragTool tool)
+    {
+        Vector2 pos = tool.transform.position;
+
+        if (dishZone.OverlapPoint(pos))
+        {
+            TryUseTool(tool, 0);
+        }
+        else if (noseZone.OverlapPoint(pos))
+        {
+            TryUseTool(tool, 1);
+        }
+        else if (paintZone != null &&
+                 paintZone.gameObject.activeSelf &&
+                 paintZone.OverlapPoint(pos))
+        {
+            TryUseTool(tool, 2);
+        }
+        else
+        {
+            Debug.Log("Dropped on nothing");
+        }
+    }
+
+    // ================= 逻辑判断 =================
+
     public void TryUseTool(DragTool tool, int zoneID)
     {
         int id = tool.toolID;
 
-        Debug.Log("Use Tool: " + id + " on Zone: " + zoneID + " Step: " + step);
+        Debug.Log($"Use Tool {id} on Zone {zoneID} Step {step}");
 
         // Step 0: Silicone → Dish
         if (step == 0 && id == 0 && zoneID == 0)
@@ -131,6 +159,7 @@ public class Step2Manager : MonoBehaviour
         {
             step = 4;
             ShowNose(4);
+
             Destroy(tool.gameObject);
 
             Debug.Log("FINISH!");
