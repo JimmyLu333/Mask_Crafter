@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour
 {
     [Header("=== 游戏设置 ===")]
-    public int totalItemsRequired = 7;  // 需要找到的物品数量
+    public int totalItemsRequired = 5;  // 需要找到的物品数量
 
     [Header("=== 要找的物品列表 ===")]
     public List<ItemData> targetItems = new List<ItemData>();  // 要找的5个物品
@@ -176,7 +176,7 @@ public class GameManager : MonoBehaviour
     {
         if (progressText != null)
         {
-            progressText.text = $" {foundCount}/{totalItemsRequired}";
+            progressText.text = $"找到 {foundCount}/{totalItemsRequired}";
         }
     }
 
@@ -355,7 +355,6 @@ public class GameManager : MonoBehaviour
     }
 
     // 在编辑器中显示调试信息
-   /*
     void OnGUI()
     {
         if (Application.isEditor)
@@ -376,5 +375,4 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-   */
 }
