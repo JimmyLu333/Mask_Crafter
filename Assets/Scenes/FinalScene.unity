@@ -768,7 +768,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1367472886}
   typingSpeed: 0.01
   fadeDuration: 2
-  nextSceneIndex: 2
+  nextSceneIndex: 6
   auntNormalSprite: {fileID: 21300000, guid: 32aed1af3d08434479602daf042a30ed, type: 3}
   auntChangedSprite: {fileID: 21300000, guid: d0461fa18bc912f4aa5594f332a62e4c, type: 3}
   spriteChangeDuration: 0.8

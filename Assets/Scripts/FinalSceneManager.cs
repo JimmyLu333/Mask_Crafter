@@ -100,7 +100,7 @@ public class FinalSceneManager : MonoBehaviour
         // === 阶段7：对话 ===
         Debug.Log("阶段7：对话开始");
         yield return StartCoroutine(ShowDialogue("", "The lady pushes the door open, her face still swathed in thick bandages."));
-        yield return StartCoroutine(ShowDialogue("阿姨", "Master... I'm here."));
+        yield return StartCoroutine(ShowDialogue("Madam", "Master... I'm here."));
         yield return StartCoroutine(ShowDialogue("Me", "Everything is ready. Please, have a seat."));
         yield return StartCoroutine(ShowDialogue("", "I pick up the custom-made prosthesis and fit it onto her face with a steady, gentle hand. As the final seam blends seamlessly into her skin, I hand her the mirror."));
         
@@ -110,9 +110,9 @@ public class FinalSceneManager : MonoBehaviour
         
         yield return StartCoroutine(ChangeAuntSpriteSimple());
 
-        yield return StartCoroutine(ShowDialogue("阿姨", "Is this... really me? I had almost forgotten what I looked like without the bandages."));
+        yield return StartCoroutine(ShowDialogue("Madam", "Is this... really me? I had almost forgotten what I looked like without the bandages."));
         yield return StartCoroutine(ShowDialogue("Me", "The contour is very natural. At the wedding next month, you won't have to hide in the corners, nor will you have to worry about the wind. You only need to stand by her side and share her smile."));
-        yield return StartCoroutine(ShowDialogue("阿姨", "Thank you... thank you so much. Finally, I can walk her down the aisle with dignity."));
+        yield return StartCoroutine(ShowDialogue("Madam", "Thank you... thank you so much. Finally, I can walk her down the aisle with dignity."));
 
         speakerText.text = "";
         yield return StartCoroutine(ShowText("She rises to leave, leaving the pile of old bandages behind on the workbench. Outside, the sky has cleared after the rain, and the sunlight casts her long shadow across the ground.", true));

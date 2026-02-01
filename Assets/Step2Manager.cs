@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // 添加这个
 
 public class Step2Manager : MonoBehaviour
 {
@@ -23,7 +24,13 @@ public class Step2Manager : MonoBehaviour
     public GameObject paintedBrushPrefab;
     public Transform brushSpawn;
 
+    [Header("场景转换设置")]
+    public string nextSceneName = "Step3"; // 下一个场景的名称
+    public float transitionDelay = 2.0f;    // 延迟几秒后转场
+    public GameObject transitionEffect;     // 可选的转场效果
+
     int step = 0;
+    bool isTransitioning = false;          // 防止重复触发
 
     void Start()
     {
@@ -180,6 +187,9 @@ public class Step2Manager : MonoBehaviour
 
             // 关闭noseZone3的Collider
             DisableCollider(noseZone3);
+
+            // 完成所有步骤，开始转场
+            StartCoroutine(CompleteAllSteps());
             return;
         }
 
@@ -189,11 +199,60 @@ public class Step2Manager : MonoBehaviour
             Destroy(tool.gameObject);
             // 关闭noseZone4的Collider
             DisableCollider(noseZone4);
+
+            // 完成额外步骤，开始转场
+            StartCoroutine(CompleteAllSteps());
             return;
         }
 
         // 错误操作
         StartCoroutine(ShowErrorFeedback(tool));
+    }
+
+    // ================= 完成所有步骤后的处理 =================
+    IEnumerator CompleteAllSteps()
+    {
+        if (isTransitioning) yield break; // 防止重复触发
+
+        isTransitioning = true;
+
+        Debug.Log("🎉 所有步骤完成！准备转场...");
+
+        // 1. 显示完成效果（如果有）
+        if (transitionEffect != null)
+        {
+            transitionEffect.SetActive(true);
+        }
+
+        // 2. 播放完成音效（可选）
+        // AudioManager.Instance.Play("CompleteSound");
+
+        // 3. 等待一段时间
+        yield return new WaitForSeconds(transitionDelay);
+
+        // 4. 切换到下一个场景
+        LoadNextScene();
+    }
+
+    // ================= 加载下一个场景 =================
+    void LoadNextScene()
+    {
+        if (string.IsNullOrEmpty(nextSceneName))
+        {
+            Debug.LogError("下一个场景名称未设置！");
+            return;
+        }
+
+        try
+        {
+            SceneManager.LoadScene(nextSceneName);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"加载场景失败: {nextSceneName}\n错误信息: {e.Message}");
+            // 可以在这里添加备用方案，比如回到主菜单
+            // SceneManager.LoadScene("MainMenu");
+        }
     }
 
     // ================= 生成刷子 =================
@@ -278,5 +337,22 @@ public class Step2Manager : MonoBehaviour
         // 重置步骤
         step = 0;
         ShowNose(0);
+
+        // 重置转场状态
+        isTransitioning = false;
+    }
+
+    // ================= 快速测试方法 =================
+    [ContextMenu("测试转场")]
+    public void TestTransition()
+    {
+        if (!Application.isPlaying)
+        {
+            Debug.LogWarning("请在运行模式下测试转场");
+            return;
+        }
+
+        Debug.Log("🧪 测试转场功能...");
+        StartCoroutine(CompleteAllSteps());
     }
 }

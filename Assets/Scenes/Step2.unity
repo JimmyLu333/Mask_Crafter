@@ -180,6 +180,9 @@ MonoBehaviour:
   brushPrefab: {fileID: 2973307653683685683, guid: 4674ffa4c5f19c943b675776107c6dee, type: 3}
   paintedBrushPrefab: {fileID: 2973307653683685683, guid: 4674ffa4c5f19c943b675776107c6dee, type: 3}
   brushSpawn: {fileID: 635083569}
+  nextSceneName: FinalScene
+  transitionDelay: 2
+  transitionEffect: {fileID: 0}
 --- !u!1 &635083568
 GameObject:
   m_ObjectHideFlags: 0
