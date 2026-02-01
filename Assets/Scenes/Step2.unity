@@ -323,7 +323,11 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
+<<<<<<< HEAD
   m_Offset: {x: -4.3466797, y: -34.53411}
+=======
+  m_Offset: {x: -48.57927, y: -55.244247}
+>>>>>>> 70d0ee0fbb52919b18d8383826339d5a4e86b04a
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -334,7 +338,11 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
+<<<<<<< HEAD
   m_Size: {x: 265.86523, y: 231.13866}
+=======
+  m_Size: {x: 83.976776, y: 133.71652}
+>>>>>>> 70d0ee0fbb52919b18d8383826339d5a4e86b04a
   m_EdgeRadius: 0
 --- !u!1 &912387653
 GameObject:
@@ -662,7 +670,11 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
+<<<<<<< HEAD
   m_Offset: {x: 44.47348, y: -21.621582}
+=======
+  m_Offset: {x: -296.52164, y: -25.488892}
+>>>>>>> 70d0ee0fbb52919b18d8383826339d5a4e86b04a
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -673,7 +685,11 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
+<<<<<<< HEAD
   m_Size: {x: 674.02277, y: 480.57886}
+=======
+  m_Size: {x: 161.93158, y: 244.99512}
+>>>>>>> 70d0ee0fbb52919b18d8383826339d5a4e86b04a
   m_EdgeRadius: 0
 --- !u!1 &985364542
 GameObject:
@@ -875,7 +891,11 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
+<<<<<<< HEAD
   m_Offset: {x: 7.6210175, y: -40.41033}
+=======
+  m_Offset: {x: 124.163574, y: -40.708206}
+>>>>>>> 70d0ee0fbb52919b18d8383826339d5a4e86b04a
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -886,7 +906,11 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
+<<<<<<< HEAD
   m_Size: {x: 238.41287, y: 251.24785}
+=======
+  m_Size: {x: 65.54651, y: 104.584625}
+>>>>>>> 70d0ee0fbb52919b18d8383826339d5a4e86b04a
   m_EdgeRadius: 0
 --- !u!1 &1316414874
 GameObject:
@@ -1012,7 +1036,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -2.850151, y: 32.480507}
+  m_Offset: {x: -8.686424, y: 32.480507}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1023,7 +1047,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 233.0851, y: 173.45311}
+  m_Size: {x: 104.68721, y: 173.45311}
   m_EdgeRadius: 0
 --- !u!225 &1316414880
 CanvasGroup:
@@ -1145,7 +1169,11 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
+<<<<<<< HEAD
   m_Offset: {x: 10.181091, y: -42.103004}
+=======
+  m_Offset: {x: 55.217453, y: -29.830536}
+>>>>>>> 70d0ee0fbb52919b18d8383826339d5a4e86b04a
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1156,7 +1184,11 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
+<<<<<<< HEAD
   m_Size: {x: 239.25562, y: 212.08897}
+=======
+  m_Size: {x: 81.19632, y: 140.83612}
+>>>>>>> 70d0ee0fbb52919b18d8383826339d5a4e86b04a
   m_EdgeRadius: 0
 --- !u!1 &1486424211
 GameObject:
@@ -1282,7 +1314,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -14.062286, y: 3.7526398}
+  m_Offset: {x: -31.571106, y: 3.7526398}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1293,7 +1325,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 261.30206, y: 165.285}
+  m_Size: {x: 127.71643, y: 165.285}
   m_EdgeRadius: 0
 --- !u!225 &1486424217
 CanvasGroup:
@@ -1490,7 +1522,11 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
+<<<<<<< HEAD
   m_Offset: {x: 342.3159, y: -270.04816}
+=======
+  m_Offset: {x: 16.762024, y: 94.04544}
+>>>>>>> 70d0ee0fbb52919b18d8383826339d5a4e86b04a
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1501,7 +1537,11 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
+<<<<<<< HEAD
   m_Size: {x: 228.64606, y: 102.52173}
+=======
+  m_Size: {x: 198.38208, y: 95.93512}
+>>>>>>> 70d0ee0fbb52919b18d8383826339d5a4e86b04a
   m_EdgeRadius: 0
 --- !u!1 &1811249001
 GameObject:
