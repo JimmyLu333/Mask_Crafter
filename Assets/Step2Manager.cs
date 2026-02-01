@@ -1,78 +1,142 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class Step2Manager : MonoBehaviour
 {
-    public GameObject stage0;
-    public GameObject stage1;
-    public GameObject stage2;
-    public GameObject stage3;
-    public GameObject stage4;
+    [Header("Nose")]
+    public GameObject nose1;
+    public GameObject nose2;
+    public GameObject nose3;
+    public GameObject nose4;
 
-    public TextMeshProUGUI hintText;
+    [Header("Zones")]
+    public Collider2D dishZone;   // 0
+    public Collider2D noseZone;   // 1
+    public Collider2D paintZone;  // 2
 
-    private int step = 0;
+    [Header("Brush")]
+    public GameObject brushPrefab;        // 普通刷子
+    public GameObject paintedBrushPrefab; // 染色刷子
+    public Transform brushSpawn;          // 出生点
+
+    int step = 0;
 
     void Start()
     {
-        ShowStage(0);
-        SetHint("Click the silicone to make the mold");
+        ShowNose(0);
+        SpawnBrush();
     }
 
-    void ShowStage(int index)
+    // 控制鼻子显示
+    void ShowNose(int index)
     {
-        stage0.SetActive(index == 0);
-        stage1.SetActive(index == 1);
-        stage2.SetActive(index == 2);
-        stage3.SetActive(index == 3);
-        stage4.SetActive(index == 4);
+        nose1.SetActive(index == 1);
+        nose2.SetActive(index == 2);
+        nose3.SetActive(index == 3);
+        nose4.SetActive(index == 4);
     }
 
-    void SetHint(string t)
+    // 生成普通刷子
+    void SpawnBrush()
     {
-        if (hintText != null)
-            hintText.text = t;
+        GameObject brush = Instantiate(
+            brushPrefab,
+            brushSpawn.position,
+            Quaternion.identity,
+            brushSpawn.parent
+        );
+
+        SetupTool(brush, 3);
     }
 
-    // ��轺
-    public void OnSilicone()
+    // 生成染色刷子
+    void SpawnPaintedBrush()
     {
-        if (step != 0) return;
+        GameObject brush = Instantiate(
+            paintedBrushPrefab,
+            brushSpawn.position,
+            Quaternion.identity,
+            brushSpawn.parent
+        );
 
-        step = 1;
-        ShowStage(1);
-        SetHint("Use the dryer to harden it");
+        // 染色刷子 = ID 4
+        SetupTool(brush, 4);
     }
 
-    // �㴵���
-    public void OnDryer()
+    // 给新工具绑定 Manager 和 ID（核心）
+    void SetupTool(GameObject obj, int id)
     {
-        if (step != 1) return;
+        DragTool tool = obj.GetComponent<DragTool>();
 
-        step = 2;
-        ShowStage(2);
-        SetHint("Brush off the excess material");
+        if (tool != null)
+        {
+            tool.manager = this;
+            tool.toolID = id;
+        }
+        else
+        {
+            Debug.LogError("Missing DragTool on: " + obj.name);
+        }
     }
 
-    // ��ˢ��
-    public void OnBrush()
+    // 处理拖拽逻辑
+    public void TryUseTool(DragTool tool, int zoneID)
     {
-        if (step != 2) return;
+        int id = tool.toolID;
 
-        step = 3;
-        ShowStage(3);
-        SetHint("Apply glue to finish");
-    }
+        Debug.Log("Use Tool: " + id + " on Zone: " + zoneID + " Step: " + step);
 
-    // �㽺ˮ
-    public void OnGlue()
-    {
-        if (step != 3) return;
+        // Step 0: Silicone → Dish
+        if (step == 0 && id == 0 && zoneID == 0)
+        {
+            step = 1;
+            ShowNose(1);
+            Destroy(tool.gameObject);
+            return;
+        }
 
-        step = 4;
-        ShowStage(4);
-        SetHint("Production completed");
+        // Step 1: Glue → Nose
+        if (step == 1 && id == 1 && zoneID == 1)
+        {
+            step = 2;
+            ShowNose(2);
+            Destroy(tool.gameObject);
+            return;
+        }
+
+        // Step 2: Dryer → Nose
+        if (step == 2 && id == 2 && zoneID == 1)
+        {
+            step = 3;
+            ShowNose(3);
+            Destroy(tool.gameObject);
+            return;
+        }
+
+        // Step 3: Brush → Paint
+        if (step == 3 && id == 3 && zoneID == 2)
+        {
+            Destroy(tool.gameObject);
+
+            paintZone.gameObject.SetActive(false);
+
+            SpawnPaintedBrush();
+
+            return;
+        }
+
+        // Step 4: Painted Brush → Nose
+        if (step == 3 && id == 4 && zoneID == 1)
+        {
+            step = 4;
+            ShowNose(4);
+            Destroy(tool.gameObject);
+
+            Debug.Log("FINISH!");
+            return;
+        }
+
+        Debug.Log("Wrong Step");
     }
 }
